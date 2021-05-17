@@ -1,13 +1,11 @@
 {
     "keys": [
         {
-            "kty": "OKP",
-            "d": "WEp9mVNhD_F-IsJUhlhXyWcPUJwZFiV1XXy6qnf0-78",
+            "kty": "oct",
             "use": "sig",
-            "crv": "Ed25519",
-            "kid": "kZgmiER0kdfzKrLcILlv59yMrZomszCbKsc_tsrBk1I",
-            "x": "2IluNC69kyhSJkecODII_sB_DxN04GaOODjQLTEJSd0",
-            "alg": "EdDSA"
+            "kid": "Aa17tG7IdjZ_oe2xY713ggUSRo39C9Ogjm4b4I7nNQQ",
+            "k": "uhBhxzDTaKYzl-IDeQgqbnSohOzZdsdVMRBV4n5MhVIfdaKKIbdJZFe0rlplSt5chT6AI_hKyf3CoJo6HmhwC82NysRxAfmNRLgnzIYLMcLhZmnUMblP2w7pJZ0S6Oyg6b5-ALvhc1BeK2nGn-B_jrXX05iVO72FgqNpndGSqtVvDPFKN-xFUef7A07rCrSyeMDfGNvYDnVkD0BpQussSftR5Xo-JixQgkMWWXUVXlUMutRGYpH_yP6mGOWIKAsmu_PbbJ58Fv54lSI1ZKdRwtbE2w-KyDHgDQt0cpT7fOgha2RZQsUhRHCotlldoIf_t5ENZ7gGzB53ggwY-Cwsew",
+            "alg": "HS256"
         }
     ]
 }
