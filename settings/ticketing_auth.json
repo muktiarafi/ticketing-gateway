@@ -1,0 +1,30 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/auth",
+      "hosts": ["ticketing-auth-srv:8080"],
+      "proxy_only": true,
+      "method": "POST"
+    },
+    {
+      "endpoint": "/api/auth/signup",
+      "hosts": ["ticketing-auth-srv:8080"],
+      "proxy_only": true,
+      "method": "POST"
+    },
+    {
+      "endpoint": "/api/auth",
+      "hosts": ["ticketing-auth-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "GET",
+      "configs": [{ "jwt": 1 }, { "cache": 2 }]
+    },
+    {
+      "endpoint": "/api/auth/signout",
+      "hosts": ["ticketing-orders-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "POST",
+      "configs": [{ "jwt": 1 }]
+    }
+  ]
+}

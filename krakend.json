@@ -1,0 +1,123 @@
+{
+  "version": 2,
+  "extra-config": {
+    "github.com/devopsfaith/krakend-ratelimit/juju/proxy": {
+      "maxRate": 100
+    },
+    "github_com/devopsfaith/krakend-gologging": {
+      "level": "INFO",
+      "prefix": "[KRAKEND]",
+      "syslog": false,
+      "stdout": true
+    },
+    "github_com/devopsfaith/krakend-opencensus": {
+      "exporters": {
+        "prometheus": {
+            "port": 9091,
+            "namespace": "krakend"
+        }
+      }
+    }
+  },
+  "endpoints": [
+    {{ range $idx, $endpoint := .ticketing_auth.endpoints }}
+      {
+        "endpoint": "{{ $endpoint.endpoint }}",
+        "method": "{{ $endpoint.method }}",
+        {{ if $endpoint.proxy_only }}
+          "output_encoding": "no-op",
+        {{ end }}
+        {{ if $endpoint.configs }}
+           "extra_config": {
+              {{ range $i, $config := $endpoint.configs }}
+                {{ if $config.jwt }} 
+                  {{ include "jwt_validator.tmpl" }}
+                {{ end }}
+                {{ if $config.cache }}
+                  ,{{ include "cache.tmpl" }}
+                {{ end }}
+              {{ end }}
+           },
+          {{ end }}
+        {{ if $endpoint.headers_to_pass }}
+          "headers_to_pass": {{ marshal $endpoint.headers_to_pass }},
+        {{ end }}
+        "backend": [
+          {
+            "host": {{ marshal $endpoint.hosts }},
+            {{ if $endpoint.proxy_only }}
+              "encoding": "no-op",
+            {{ end }}
+            "url_pattern": "{{ $endpoint.endpoint }}",
+            "method": "{{ $endpoint.method }}"
+          }
+        ]
+      },
+    {{ end }}
+    {{ range $idx, $endpoint := .ticketing_tickets.endpoints }}
+      {
+        "endpoint": "{{ $endpoint.endpoint }}",
+        "method": "{{ $endpoint.method }}",
+        {{ if $endpoint.configs }}
+           "extra_config": {
+              {{ range $i, $config := $endpoint.configs }}
+                {{ if $config.jwt }} 
+                  {{ include "jwt_validator.tmpl" }}
+                {{ end }}
+              {{ end }}
+           },
+          {{ end }}
+        {{ if $endpoint.headers_to_pass }}
+          "headers_to_pass": {{ marshal $endpoint.headers_to_pass }},
+        {{ end }}
+        "backend": [
+          {
+            "host": {{ marshal $endpoint.hosts }},
+            "url_pattern": "{{ $endpoint.endpoint }}",
+            "method": "{{ $endpoint.method }}"
+          }
+        ]
+      },
+    {{ end }}
+    {{ range $idx, $endpoint := .ticketing_orders.endpoints }}
+      {
+        "endpoint": "{{ $endpoint.endpoint }}",
+        "method": "{{ $endpoint.method }}",
+        {{ if $endpoint.configs }}
+           "extra_config": {
+              {{ range $i, $config := $endpoint.configs }}
+                {{ if $config.jwt }} 
+                  {{ include "jwt_validator.tmpl" }}
+                {{ end }}
+              {{ end }}
+           },
+          {{ end }}
+        {{ if $endpoint.headers_to_pass }}
+          "headers_to_pass": {{ marshal $endpoint.headers_to_pass }},
+        {{ end }}
+        "backend": [
+          {
+            "host": {{ marshal $endpoint.hosts }},
+            "url_pattern": "{{ $endpoint.endpoint }}",
+            "method": "{{ $endpoint.method }}"
+          }
+        ]
+      },
+    {{ end }}
+    {
+      "endpoint": "/api/payments",
+      "headers_to_pass": ["*"],
+      "extra_config": {
+        {{ include "jwt_validator.tmpl" }}
+      },
+      "method": "POST",
+      "backend": [
+        {
+          "host": ["ticketing-tickets-srv:8080"],
+          "url_pattern": "/api/payments",
+          "method": "POST"
+        }
+      ]
+    }
+  ]
+}

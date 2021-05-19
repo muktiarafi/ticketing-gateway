@@ -1,0 +1,30 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/tickets",
+      "hosts": ["ticketing-tickets-srv:8080"],
+      "method": "GET"
+    },
+    {
+      "endpoint": "/api/tickets",
+      "hosts": ["ticketing-tickets-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "POST",
+      "configs": [{ "jwt": 1 }]
+    },
+    {
+      "endpoint": "/api/tickets/{ticketID}",
+      "hosts": ["ticketing-tickets-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "PUT",
+      "configs": [{ "jwt": 1 }]
+    },
+    {
+      "endpoint": "/api/tickets/{ticketID}",
+      "hosts": ["ticketing-tickets-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "GET",
+      "configs": [{ "jwt": 1 }]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "endpoints": [
+    {
+      "endpoint": "/api/orders",
+      "hosts": ["ticketing-orders-srv:8080"],
+      "method": "GET"
+    },
+    {
+      "endpoint": "/api/orders",
+      "hosts": ["ticketing-orders-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "POST",
+      "configs": [{ "jwt": 1 }]
+    },
+    {
+      "endpoint": "/api/orders/{orderID}",
+      "hosts": ["ticketing-orders-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "PUT",
+      "configs": [{ "jwt": 1 }]
+    },
+    {
+      "endpoint": "/api/orders/{orderID}",
+      "hosts": ["ticketing-orders-srv:8080"],
+      "headers_to_pass": ["X-User", "X-Email"],
+      "method": "GET",
+      "configs": [{ "jwt": 1 }]
+    }
+  ]
+}
